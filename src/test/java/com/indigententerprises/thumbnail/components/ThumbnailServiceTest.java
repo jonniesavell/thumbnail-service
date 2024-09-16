@@ -1,5 +1,7 @@
 package com.indigententerprises.thumbnail.components;
 
+import com.indigententerprises.thumbnail.domain.ImageData;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,12 +17,13 @@ public class ThumbnailServiceTest {
 
         final ThumbnailService systemUnderTest = new ThumbnailService(0.90);
         final ClassPathResource classPathResource = new ClassPathResource("space.jpg");
-        final BufferedImage result = systemUnderTest.resizeImage(
+        final ImageData result = systemUnderTest.resizeImage(
                 classPathResource.getInputStream(),
                 200,
                 "PNG"
         );
 
-        Assert.assertEquals(200, result.getWidth());
+        final BufferedImage bufferedImage = result.bufferedImage;
+        Assert.assertEquals(200, bufferedImage.getWidth());
     }
 }

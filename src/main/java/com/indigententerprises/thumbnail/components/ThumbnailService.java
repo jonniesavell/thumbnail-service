@@ -1,5 +1,7 @@
 package com.indigententerprises.thumbnail.components;
 
+import com.indigententerprises.thumbnail.domain.ImageData;
+
 import net.coobird.thumbnailator.Thumbnails;
 
 import java.awt.image.BufferedImage;
@@ -18,7 +20,7 @@ public class ThumbnailService implements com.indigententerprises.thumbnail.servi
     }
 
     @Override
-    public BufferedImage resizeImage(final InputStream inputStream, final int targetWidth, final String type) throws IOException {
+    public ImageData resizeImage(final InputStream inputStream, final int targetWidth, final String type) throws IOException {
         final BufferedImage originalImage = ImageIO.read(inputStream);
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -33,7 +35,9 @@ public class ThumbnailService implements com.indigententerprises.thumbnail.servi
             final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
 
             try {
-                return ImageIO.read(byteArrayInputStream);
+                final BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+                final ImageData result = new ImageData(bufferedImage, data.length);
+                return result;
             } finally {
                 byteArrayInputStream.close();
             }
